@@ -14,18 +14,18 @@ public class GoRocky {
     /**
      * @param args the command line arguments
      */
-    //public FlappyBird flappybird;
+    //public RockyLogic flappybird;
     
     public static void main(String[] args) {
         // TODO code application logic here
-        //FlappyBird fb = new FlappyBird();
+        //RockyLogic fb = new RockyLogic();
         //fb.main(args);
         Gui mygui= new Gui();    
         mygui.show();
         //mygui.setVisible(true); 
         //String[] args = {};
-        //flappybird = new FlappyBird();
-        //flappybird.FlappyBird();
+        //flappybird = new RockyLogic();
+        //flappybird.RockyLogic();
 
     }
    

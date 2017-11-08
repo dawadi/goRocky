@@ -5,7 +5,7 @@
  */
 package gorocky;
 
-import static gorocky.FlappyBird.goRocky;
+import static gorocky.RockyLogic.goRocky;
 import javax.swing.ImageIcon;
 
 /**
@@ -17,11 +17,11 @@ public class Gui extends javax.swing.JFrame {
     /**
      * Creates new form Gui
      */
-    //goRocky = new FlappyBird();
+    //goRocky = new RockyLogic();
     
     public Gui() {
         initComponents();
-        //FlappyBird.main(new String[0]);
+        //RockyLogic.main(new String[0]);
     }
 
     /**
@@ -37,6 +37,8 @@ public class Gui extends javax.swing.JFrame {
         NewGame = new javax.swing.JButton();
         HighScore = new javax.swing.JButton();
         Exit = new javax.swing.JButton();
+        HighScore1 = new javax.swing.JButton();
+        HighScore2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 255));
@@ -95,6 +97,29 @@ public class Gui extends javax.swing.JFrame {
             }
         });
 
+        HighScore1.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
+        HighScore1.setForeground(new java.awt.Color(255, 255, 255));
+        HighScore1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
+        HighScore1.setText("Credits");
+        HighScore1.setBorderPainted(false);
+        HighScore1.setContentAreaFilled(false);
+        HighScore1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        HighScore1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        HighScore2.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
+        HighScore2.setForeground(new java.awt.Color(255, 255, 255));
+        HighScore2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
+        HighScore2.setText("Rules");
+        HighScore2.setBorderPainted(false);
+        HighScore2.setContentAreaFilled(false);
+        HighScore2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        HighScore2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        HighScore2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HighScore2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,20 +128,26 @@ public class Gui extends javax.swing.JFrame {
                 .addGap(236, 236, 236)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(HighScore, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(NewGame, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(NewGame, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(HighScore1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(HighScore2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(308, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(85, 85, 85)
+                .addGap(52, 52, 52)
                 .addComponent(NewGame, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(33, 33, 33)
                 .addComponent(HighScore, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
+                .addGap(41, 41, 41)
+                .addComponent(HighScore2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(HighScore1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
                 .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -127,7 +158,7 @@ public class Gui extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
         );
 
         pack();
@@ -140,14 +171,14 @@ public class Gui extends javax.swing.JFrame {
 
     private void NewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGameActionPerformed
         // TODO add your handling code here:
-        //FlappyBird();
+        //RockyLogic();
         
         String[] args = null;
         goRocky.main(args);
         //flappyBird.show();
-        //new FlappyBird().setVisible(true);
-        //flappyBird.FlappyBird();
-        //FlappyBird fb = new FlappyBird();
+        //new RockyLogic().setVisible(true);
+        //flappyBird.RockyLogic();
+        //RockyLogic fb = new RockyLogic();
 
     }//GEN-LAST:event_NewGameActionPerformed
 
@@ -168,6 +199,10 @@ public class Gui extends javax.swing.JFrame {
         NewGame.setIcon(II);
         // TODO add your handling code here:
     }//GEN-LAST:event_NewGameMouseExited
+
+    private void HighScore2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HighScore2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HighScore2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,6 +242,8 @@ public class Gui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Exit;
     private javax.swing.JButton HighScore;
+    private javax.swing.JButton HighScore1;
+    private javax.swing.JButton HighScore2;
     private javax.swing.JButton NewGame;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

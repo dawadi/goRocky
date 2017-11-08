@@ -16,18 +16,18 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class FlappyBird implements ActionListener, MouseListener, KeyListener
+public class RockyLogic implements ActionListener, MouseListener, KeyListener
 {
 
-	public static FlappyBird goRocky;
+	public static RockyLogic goRocky;
 
 	public final int WIDTH = 800, HEIGHT = 600;
 
 	public Renderer renderer;
 
-	public Rectangle bird;
+	public Rectangle rocky;
         
-        //public ImageIcon bird;
+        //public ImageIcon rocky;
         
 	public ArrayList<Rectangle> columns;
 
@@ -37,7 +37,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 	public Random rand;
 
-	public FlappyBird()
+	public RockyLogic()
 	{
 		JFrame jframe = new JFrame();
 		Timer timer = new Timer(20, this);
@@ -46,7 +46,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		rand = new Random();
 
 		jframe.add(renderer);
-		jframe.setTitle("Flappy Bird");
+		jframe.setTitle("goRocky");
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframe.setSize(WIDTH, HEIGHT);
 		jframe.addMouseListener(this);
@@ -54,7 +54,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 
-		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+		rocky = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
                 // = new ImageIcon(getClass().getResource("rocky.png"));
 		columns = new ArrayList<Rectangle>();
 
@@ -68,8 +68,8 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 	public void addColumn(boolean start)
 	{
-		int space = 300;
-		int width = 100;
+		int space = 250;
+		int width = 50;
 		int height = 50 + rand.nextInt(300);
 
 		if (start)
@@ -83,10 +83,12 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 			columns.add(new Rectangle(columns.get(columns.size() - 1).x, 0, width, HEIGHT - height - space));
 		}
 	}
-
+        
+        //paints the obstacle
 	public void paintColumn(Graphics g, Rectangle column)
 	{
-		g.setColor(Color.green.darker());
+                Color purple = new Color(140, 26, 255);
+                g.setColor(purple);
 		g.fillRect(column.x, column.y, column.width, column.height);
 	}
 
@@ -94,7 +96,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 	{
 		if (gameOver)
 		{
-                    bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+                    rocky = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
                     // = new ImageIcon(getClass().getResource("rocky.png"));
                     columns.clear();
 			yMotion = 0;
@@ -159,46 +161,46 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 				}
 			}
 
-			bird.y += yMotion;
+			rocky.y += yMotion;
 
 			for (Rectangle column : columns)
 			{
-				if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
+				if (column.y == 0 && rocky.x + rocky.width / 2 > column.x + column.width / 2 - 10 && rocky.x + rocky.width / 2 < column.x + column.width / 2 + 10)
 				{
 					score++;
 				}
 
-				if (column.intersects(bird))
+				if (column.intersects(rocky))
 				{
 					gameOver = true;
 
-					if (bird.x <= column.x)
+					if (rocky.x <= column.x)
 					{
-						bird.x = column.x - bird.width;
+						rocky.x = column.x - rocky.width;
 
 					}
 					else
 					{
 						if (column.y != 0)
 						{
-							bird.y = column.y - bird.height;
+							rocky.y = column.y - rocky.height;
 						}
-						else if (bird.y < column.height)
+						else if (rocky.y < column.height)
 						{
-							bird.y = column.height;
+							rocky.y = column.height;
 						}
 					}
 				}
 			}
 
-			if (bird.y > HEIGHT - 120 || bird.y < 0)
+			if (rocky.y > HEIGHT - 120 || rocky.y < 0)
 			{
 				gameOver = true;
 			}
 
-			if (bird.y + yMotion >= HEIGHT - 120)
+			if (rocky.y + yMotion >= HEIGHT - 120)
 			{
-				bird.y = HEIGHT - 120 - bird.height;
+				rocky.y = HEIGHT - 120 - rocky.height;
 				gameOver = true;
 			}
 		}
@@ -208,17 +210,19 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 	public void repaint(Graphics g)
 	{
-		g.setColor(Color.cyan);
+		Color background = new Color(179, 240, 255);
+                g.setColor(background);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-
+                
 		g.setColor(Color.orange);
 		g.fillRect(0, HEIGHT - 120, WIDTH, 120);
-
-		g.setColor(Color.green);
-		g.fillRect(0, HEIGHT - 120, WIDTH, 20);
+                
+		Color grass = new Color(51, 204, 51);
+                g.setColor(grass);
+		g.fillRect(0, HEIGHT - 120, WIDTH, 80);
 
 		g.setColor(Color.red);
-		g.fillRect(bird.x, bird.y, bird.width, bird.height);
+		g.fillRect(rocky.x, rocky.y, rocky.width, rocky.height);
 
 		for (Rectangle column : columns)
 		{
@@ -235,7 +239,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 		if (gameOver)
 		{
-			g.drawString("Game Over!", 100, HEIGHT / 2 - 50);
+			g.drawString("Game Over!!!", 100, HEIGHT / 2 - 50);
 		}
 
 		if (!gameOver && started)
@@ -243,19 +247,22 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 			g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
 		}
 	}
-
+        
+        //main metod
 	public static void main(String[] args)
 	{
-		goRocky = new FlappyBird();
+		goRocky = new RockyLogic();
 	}
 
 	@Override
+        //click to jump
 	public void mouseClicked(MouseEvent e)
 	{
 		jump();
 	}
 
 	@Override
+        //space to jump
 	public void keyReleased(KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_SPACE)
