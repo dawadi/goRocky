@@ -3,6 +3,7 @@ package gorocky;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,32 +11,36 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.ImageIcon;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class RockyLogic implements ActionListener, MouseListener, KeyListener
+public final class RockyLogic implements ActionListener, MouseListener, KeyListener
 {
 
 	public static RockyLogic goRocky;
-
-	public final int WIDTH = 800, HEIGHT = 600;
-
+	public final int WIDTH = 1200, HEIGHT = 700;
+        public int speed = 10;
 	public Renderer renderer;
-
 	public Rectangle rocky;
-        
-        //public ImageIcon rocky;
-        
-	public ArrayList<Rectangle> columns;
-
-	public int ticks, yMotion, score;
-
-	public boolean gameOver, started;
-
+        public ImageIcon rocky1;
+	public ArrayList<Rectangle> obstacle;
+	public int ticks, rockyY, score;
+        public boolean gameOver, begin;
 	public Random rand;
+        public boolean flag=true;
+        JPanel jp = new JPanel();
+        JLabel jl = new JLabel();
+
 
 	public RockyLogic()
 	{
@@ -47,48 +52,66 @@ public class RockyLogic implements ActionListener, MouseListener, KeyListener
 
 		jframe.add(renderer);
 		jframe.setTitle("goRocky");
-		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jframe.setSize(WIDTH, HEIGHT);
 		jframe.addMouseListener(this);
 		jframe.addKeyListener(this);
 		jframe.setResizable(false);
 		jframe.setVisible(true);
-
+                
+                //Rectangle(int x, int y, int width, int height) 
 		rocky = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
-                // = new ImageIcon(getClass().getResource("rocky.png"));
-		columns = new ArrayList<Rectangle>();
 
-		addColumn(true);
-		addColumn(true);
-		addColumn(true);
-		addColumn(true);
+                
+                
+               JLabel rockyFace = new JLabel();
+               rockyFace.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/rocky.png"))); 
+               jframe.add(rockyFace);
+               rockyFace.setVisible(true);
+              
+//  jl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/rocky.png")));
+              //  jl.setVisible(true);
+                //jframe.add(jl);
+                //add(jframe);
+                //validate();
+		obstacle = new ArrayList<>();
+
+		addObstacle(true);
+		addObstacle(true);
+		addObstacle(true);
+		addObstacle(true);
 
 		timer.start();
 	}
 
-	public void addColumn(boolean start)
+	public void addObstacle(boolean start)
 	{
-		int space = 250;
-		int width = 50;
+		int space = 300; //gap between two obstacle
+		int width = 100;
 		int height = 50 + rand.nextInt(300);
 
 		if (start)
 		{
-			columns.add(new Rectangle(WIDTH + width + columns.size() * 300, HEIGHT - height - 120, width, height));
-			columns.add(new Rectangle(WIDTH + width + (columns.size() - 1) * 300, 0, width, HEIGHT - height - space));
-		}
+                    System.out.println("start: "+start);
+                    //for the lower obstacle
+                    obstacle.add(new Rectangle(WIDTH + width + obstacle.size() * 300, HEIGHT - height - 120, width, height));
+                    //for the obstacle above
+                    obstacle.add(new Rectangle(WIDTH + width + (obstacle.size() - 1) * 300, 0, width, HEIGHT - height - space));
+                        
+                }
 		else
-		{
-			columns.add(new Rectangle(columns.get(columns.size() - 1).x + 600, HEIGHT - height - 120, width, height));
-			columns.add(new Rectangle(columns.get(columns.size() - 1).x, 0, width, HEIGHT - height - space));
+		{ 
+                    obstacle.add(new Rectangle(obstacle.get(obstacle.size() - 1).x + 600, HEIGHT - height - 120, width, height));
+                    obstacle.add(new Rectangle(obstacle.get(obstacle.size() - 1).x, 0, width, HEIGHT - height - space));
 		}
 	}
         
         //paints the obstacle
-	public void paintColumn(Graphics g, Rectangle column)
+	public void paintObstacle(Graphics g, Rectangle column)
 	{
                 Color purple = new Color(140, 26, 255);
                 g.setColor(purple);
+                //Fills the specified rectangle.
 		g.fillRect(column.x, column.y, column.width, column.height);
 	}
 
@@ -96,84 +119,93 @@ public class RockyLogic implements ActionListener, MouseListener, KeyListener
 	{
 		if (gameOver)
 		{
-                    rocky = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
-                    // = new ImageIcon(getClass().getResource("rocky.png"));
-                    columns.clear();
-			yMotion = 0;
+                    //rocky = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+                    //rocky1 = new ImageIcon(getClass().getResource("rocky.png"));
+                        obstacle.clear();
+			rockyY = 0;
 			score = 0;
 
-			addColumn(true);
-			addColumn(true);
-			addColumn(true);
-			addColumn(true);
-
+			addObstacle(true);
+			addObstacle(true);
+			addObstacle(true);
+			addObstacle(true);
 			gameOver = false;
 		}
 
-		if (!started)
+		if (!begin)
 		{
-			started = true;
+			begin = true;
 		}
 		else if (!gameOver)
 		{
-			if (yMotion > 0)
+			if (rockyY > 0)
 			{
-				yMotion = 0;
+				rockyY = 0;
 			}
 
-			yMotion -= 10;
+			rockyY -= 10;
 		}
-	}
+	}//end of jump
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		int speed = 10;
-
 		ticks++;
-
-		if (started)
+                //System.out.println("ticks: "+ticks);
+		if (begin)
 		{
-			for (int i = 0; i < columns.size(); i++)
+                    //move the column as the value of the speed of rocky
+                    for (int i = 0; i < obstacle.size(); i++)
 			{
-				Rectangle column = columns.get(i);
-
-				column.x -= speed;
+				Rectangle column = obstacle.get(i);
+                                //System.out.println("asfasfas "+obstacle.get(i));
+				//move the column left with the speed
+                                column.x -= speed;
 			}
 
-			if (ticks % 2 == 0 && yMotion < 15)
+			if (ticks % 2 == 0 && rockyY < 15)
 			{
-				yMotion += 2;
+				rockyY += 2;
 			}
 
-			for (int i = 0; i < columns.size(); i++)
+			
+                        for (int i = 0; i < obstacle.size(); i++)
 			{
-				Rectangle column = columns.get(i);
+				Rectangle column = obstacle.get(i);
 
 				if (column.x + column.width < 0)
 				{
-					columns.remove(column);
+					obstacle.remove(column);
 
 					if (column.y == 0)
 					{
-						addColumn(false);
+						addObstacle(false);
 					}
 				}
-			}
+			} 
 
-			rocky.y += yMotion;
 
-			for (Rectangle column : columns)
+			rocky.y += rockyY;
+                                                
+                        //to calculate score and collision detection
+			for (Rectangle column : obstacle)
 			{
 				if (column.y == 0 && rocky.x + rocky.width / 2 > column.x + column.width / 2 - 10 && rocky.x + rocky.width / 2 < column.x + column.width / 2 + 10)
 				{
-					score++;
+                                    //System.out.println("Score initial: "+score);
+                                    score++;
+                                        
+                                        if(score%5==0)
+                                            {
+                                                speed=speed+2;
+                                            }
 				}
 
 				if (column.intersects(rocky))
 				{
-					gameOver = true;
-
+                                                                        
+                                        gameOver = true;
+                                        speed=10;
 					if (rocky.x <= column.x)
 					{
 						rocky.x = column.x - rocky.width;
@@ -190,18 +222,22 @@ public class RockyLogic implements ActionListener, MouseListener, KeyListener
 							rocky.y = column.height;
 						}
 					}
-				}
-			}
-
+				}//end of intersect
+			}//end of for loop
+                        
+                        //if goes above or below
 			if (rocky.y > HEIGHT - 120 || rocky.y < 0)
 			{
 				gameOver = true;
+                                //reset speed to initial value 10
+                                speed=10;
 			}
 
-			if (rocky.y + yMotion >= HEIGHT - 120)
+			if (rocky.y + rockyY >= HEIGHT - 120)
 			{
 				rocky.y = HEIGHT - 120 - rocky.height;
 				gameOver = true;
+                                speed=10;
 			}
 		}
 
@@ -224,27 +260,48 @@ public class RockyLogic implements ActionListener, MouseListener, KeyListener
 		g.setColor(Color.red);
 		g.fillRect(rocky.x, rocky.y, rocky.width, rocky.height);
 
-		for (Rectangle column : columns)
+		//paint the rectangular bars
+                for (Rectangle column : obstacle)
 		{
-			paintColumn(g, column);
+			paintObstacle(g, column);
 		}
 
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", 1, 100));
 
-		if (!started)
+		if (!begin)
 		{
 			g.drawString("Click to start!", 75, HEIGHT / 2 - 50);
 		}
 
 		if (gameOver)
 		{
-			g.drawString("Game Over!!!", 100, HEIGHT / 2 - 50);
+                        if(flag==true)
+                        {
+                            try {
+                                File file = new File("Score.txt");
+                                try (BufferedWriter output = new BufferedWriter(new FileWriter(file, true))) {
+                                output.newLine();
+                                output.append("Score:" + score);
+                                flag=false;
+                            }
+                            } catch ( IOException error) {
+                            } 
+                        }
+                        g.drawString("Game Over!!!", 195, HEIGHT / 2 - 50);
+                        g.setFont(new Font("Arial", 1, 50));
+                        g.drawString("Click to start, Again!", 240, HEIGHT / 2 + 40);
+                        g.drawString("(" + MouseInfo.getPointerInfo().getLocation().x + ", " +MouseInfo.getPointerInfo().getLocation().y + ")",800, 650);
 		}
 
-		if (!gameOver && started)
+		if (!gameOver && begin)
 		{
-			g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+                    if(score%5==0 && score>=5)
+                       {
+                            g.drawString("Level Up", 195, HEIGHT / 2);
+                       }
+                    g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+
 		}
 	}
         

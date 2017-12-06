@@ -22,6 +22,7 @@ public class GoRocky {
         //fb.main(args);
         Gui mygui= new Gui();    
         mygui.show();
+        
         //mygui.setVisible(true); 
         //String[] args = {};
         //flappybird = new RockyLogic();

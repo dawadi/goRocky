@@ -5,7 +5,11 @@
  */
 package gorocky;
 
-import static gorocky.RockyLogic.goRocky;
+import java.awt.Insets;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,6 +22,8 @@ public class Gui extends javax.swing.JFrame {
      * Creates new form Gui
      */
     //goRocky = new RockyLogic();
+    //public String High;
+    private static String High = "";
     
     public Gui() {
         initComponents();
@@ -32,13 +38,17 @@ public class Gui extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         NewGame = new javax.swing.JButton();
         HighScore = new javax.swing.JButton();
-        Exit = new javax.swing.JButton();
-        HighScore1 = new javax.swing.JButton();
         HighScore2 = new javax.swing.JButton();
+        HighScore1 = new javax.swing.JButton();
+        Exit = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 255));
@@ -46,12 +56,15 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 255, 204));
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jPanel2.setOpaque(false);
 
         NewGame.setBackground(new java.awt.Color(255, 255, 255));
-        NewGame.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
-        NewGame.setForeground(new java.awt.Color(255, 255, 255));
-        NewGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
-        NewGame.setText("New Game");
+        NewGame.setFont(new java.awt.Font("Nexa Light", 1, 24)); // NOI18N
+        NewGame.setForeground(new java.awt.Color(255, 214, 26));
+        NewGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/button-normal.png"))); // NOI18N
+        NewGame.setText("                              New Game");
         NewGame.setToolTipText("");
         NewGame.setBorderPainted(false);
         NewGame.setContentAreaFilled(false);
@@ -74,81 +87,155 @@ public class Gui extends javax.swing.JFrame {
             }
         });
 
-        HighScore.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
-        HighScore.setForeground(new java.awt.Color(255, 255, 255));
-        HighScore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
-        HighScore.setText("High Score");
+        HighScore.setFont(new java.awt.Font("Nexa Light", 1, 24)); // NOI18N
+        HighScore.setForeground(new java.awt.Color(255, 214, 26));
+        HighScore.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/button-normal.png"))); // NOI18N
+        HighScore.setText("                            High Score");
         HighScore.setBorderPainted(false);
         HighScore.setContentAreaFilled(false);
         HighScore.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         HighScore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        Exit.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
-        Exit.setForeground(new java.awt.Color(255, 255, 255));
-        Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
-        Exit.setText("Exit");
-        Exit.setBorderPainted(false);
-        Exit.setContentAreaFilled(false);
-        Exit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        Exit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        Exit.addActionListener(new java.awt.event.ActionListener() {
+        HighScore.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                HighScoreMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HighScoreMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HighScoreMouseExited(evt);
+            }
+        });
+        HighScore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
+                HighScoreActionPerformed(evt);
             }
         });
 
-        HighScore1.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
-        HighScore1.setForeground(new java.awt.Color(255, 255, 255));
-        HighScore1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
-        HighScore1.setText("Credits");
-        HighScore1.setBorderPainted(false);
-        HighScore1.setContentAreaFilled(false);
-        HighScore1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        HighScore1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        HighScore2.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
-        HighScore2.setForeground(new java.awt.Color(255, 255, 255));
-        HighScore2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/purple_button.png"))); // NOI18N
-        HighScore2.setText("Rules");
+        HighScore2.setFont(new java.awt.Font("Nexa Light", 1, 24)); // NOI18N
+        HighScore2.setForeground(new java.awt.Color(255, 214, 26));
+        HighScore2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/button-normal.png"))); // NOI18N
+        HighScore2.setText("                 Rules");
+        HighScore2.setToolTipText("");
         HighScore2.setBorderPainted(false);
         HighScore2.setContentAreaFilled(false);
         HighScore2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         HighScore2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        HighScore2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                HighScore2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HighScore2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HighScore2MouseExited(evt);
+            }
+        });
         HighScore2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HighScore2ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(236, 236, 236)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(HighScore, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(NewGame, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(HighScore1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(HighScore2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(308, Short.MAX_VALUE))
+        HighScore1.setFont(new java.awt.Font("Nexa Light", 1, 24)); // NOI18N
+        HighScore1.setForeground(new java.awt.Color(255, 214, 26));
+        HighScore1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/button-normal.png"))); // NOI18N
+        HighScore1.setText("                   Credits");
+        HighScore1.setBorderPainted(false);
+        HighScore1.setContentAreaFilled(false);
+        HighScore1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        HighScore1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        HighScore1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                HighScore1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HighScore1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HighScore1MouseExited(evt);
+            }
+        });
+        HighScore1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HighScore1ActionPerformed(evt);
+            }
+        });
+
+        Exit.setFont(new java.awt.Font("Nexa Light", 1, 24)); // NOI18N
+        Exit.setForeground(new java.awt.Color(255, 214, 26));
+        Exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/button-normal.png"))); // NOI18N
+        Exit.setText("             Exit");
+        Exit.setBorderPainted(false);
+        Exit.setContentAreaFilled(false);
+        Exit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Exit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ExitMouseEntered(evt);
+            }
+        });
+        Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/title.png"))); // NOI18N
+        jLabel1.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(214, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(NewGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(HighScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(HighScore2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(HighScore1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Exit))
+                .addGap(195, 195, 195))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addComponent(NewGame, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addComponent(HighScore, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(18, 18, 18)
                 .addComponent(HighScore2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(HighScore1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addGap(18, 18, 18)
                 .addComponent(Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(134, 134, 134))
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel1.add(jPanel2, gridBagConstraints);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gorocky/bg.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jLabel2, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,7 +245,7 @@ public class Gui extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
         );
 
         pack();
@@ -171,39 +258,126 @@ public class Gui extends javax.swing.JFrame {
 
     private void NewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGameActionPerformed
         // TODO add your handling code here:
-        //RockyLogic();
-        
+       
         String[] args = null;
-        goRocky.main(args);
-        //flappyBird.show();
-        //new RockyLogic().setVisible(true);
-        //flappyBird.RockyLogic();
-        //RockyLogic fb = new RockyLogic();
-
+        RockyLogic.main(args);
+        
+        //Username u= new Username(); 
+        //u.setVisible(true);
+        
     }//GEN-LAST:event_NewGameActionPerformed
 
     private void NewGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NewGameMouseClicked
         // TODO add your handling code here:
-        ImageIcon II = new ImageIcon(getClass().getResource("/Images/purple_button_hover.png"));
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
         NewGame.setIcon(II);
     }//GEN-LAST:event_NewGameMouseClicked
 
     private void NewGameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NewGameMouseEntered
         // TODO add your handling code here:
-        ImageIcon II = new ImageIcon(getClass().getResource("/Images/purple_button_hover.png"));
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
         NewGame.setIcon(II);
     }//GEN-LAST:event_NewGameMouseEntered
 
     private void NewGameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NewGameMouseExited
-        ImageIcon II = new ImageIcon(getClass().getResource("/Images/purple_button.png"));
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-normal.png"));
         NewGame.setIcon(II);
         // TODO add your handling code here:
     }//GEN-LAST:event_NewGameMouseExited
 
     private void HighScore2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HighScore2ActionPerformed
         // TODO add your handling code here:
+         Rules r= new Rules();    
+        r.show();
     }//GEN-LAST:event_HighScore2ActionPerformed
 
+    private void HighScore1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HighScore1ActionPerformed
+        // TODO add your handling code here:
+        
+        Credits c= new Credits(); 
+        c.setVisible(true);
+        
+        //this.dispose();
+       
+        //c.show();
+    }//GEN-LAST:event_HighScore1ActionPerformed
+
+    private void HighScoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HighScoreActionPerformed
+        // TODO add your handling code here:
+        
+    HighScore h= new HighScore(); 
+    h.setVisible(true);
+    
+
+    }//GEN-LAST:event_HighScoreActionPerformed
+
+    private void HighScoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScoreMouseClicked
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        HighScore.setIcon(II);
+    }//GEN-LAST:event_HighScoreMouseClicked
+
+    private void HighScoreMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScoreMouseEntered
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        HighScore.setIcon(II);
+    }//GEN-LAST:event_HighScoreMouseEntered
+
+    private void HighScoreMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScoreMouseExited
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-normal.png"));
+        HighScore.setIcon(II);
+    }//GEN-LAST:event_HighScoreMouseExited
+
+    private void HighScore2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScore2MouseClicked
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        HighScore2.setIcon(II);
+    }//GEN-LAST:event_HighScore2MouseClicked
+
+    private void HighScore2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScore2MouseEntered
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        HighScore2.setIcon(II);
+    }//GEN-LAST:event_HighScore2MouseEntered
+
+    private void HighScore2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScore2MouseExited
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-normal.png"));
+        HighScore2.setIcon(II);
+    }//GEN-LAST:event_HighScore2MouseExited
+
+    private void HighScore1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScore1MouseClicked
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        HighScore1.setIcon(II);
+    }//GEN-LAST:event_HighScore1MouseClicked
+
+    private void HighScore1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScore1MouseEntered
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        HighScore1.setIcon(II);
+    }//GEN-LAST:event_HighScore1MouseEntered
+
+    private void HighScore1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HighScore1MouseExited
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-normal.png"));
+        HighScore1.setIcon(II);
+    }//GEN-LAST:event_HighScore1MouseExited
+
+    private void ExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitMouseClicked
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        Exit.setIcon(II);
+    }//GEN-LAST:event_ExitMouseClicked
+
+    private void ExitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitMouseEntered
+        // TODO add your handling code here:
+        ImageIcon II = new ImageIcon(getClass().getResource("/Images/button-hover.png"));
+        Exit.setIcon(II);
+    }//GEN-LAST:event_ExitMouseEntered
+
+    
     /**
      * @param args the command line arguments
      */
@@ -245,6 +419,13 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton HighScore1;
     private javax.swing.JButton HighScore2;
     private javax.swing.JButton NewGame;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
+    private void setMargin(Insets insets) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

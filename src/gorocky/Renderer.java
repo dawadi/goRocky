@@ -9,7 +9,6 @@ package gorocky;
  * @author dawadi
  */
 
-import static gorocky.RockyLogic.goRocky;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
